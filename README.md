@@ -23,5 +23,5 @@ root@localhost:~$ venv_name\Scripts\activate
 ```
 After running run.py and installing all requisites, you can now run app.py to start the flask server by writing this set of command in the terminal
 ```console
-(venv_name)root@localhost:~$py app.py
+(venv_name)root@localhost:~$py ./Scripts/app.py
 ```
