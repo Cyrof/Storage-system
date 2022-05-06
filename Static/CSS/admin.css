@@ -1,0 +1,108 @@
+/* admin page */
+.main-container{
+    height: 100vh;
+    width: 100vw;
+    background: rgb(228, 227, 227);
+    display: flex;
+    justify-content: center;
+}
+
+.main-wrapper{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.container-form{
+    top: 50%;
+    height: 18rem;
+    width: 20rem;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 1px 1px 2px 2px grey;
+    align-items: center;
+}
+
+.btn-form{
+    background-color: rgb(86, 124, 247);
+    color: white;
+    width: 100%;
+}
+
+#int{
+    display: inline-block;
+    width: 100%;
+}
+
+.label{
+    margin: 0.5rem auto 0.5rem 0;
+    font-size: 1.2rem;
+}
+
+.sign-up{
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.icon-container{
+    text-align: center;
+    justify-content: center;
+    font-family: 'Water Brush', cursive;
+}
+
+.log-in{
+    display: inline-block;
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+    font-size: 1.5rem;
+}
+
+/* sign-up page */
+.sign-up-wrapper{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.sign-up-form-container{
+    top: 50%;
+    height: 21.5rem;
+    width: 20rem;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 1px 1px 2px 2px grey;
+    align-items: center;
+}
+
+#form-int{
+    display: inline-block;
+    width: 100%;
+}
+
+.btn-sign-up{
+    background-color: rgb(86, 124, 247);
+    color: white;
+    width: 100%;
+}
+
+#form-lab{
+    margin: 0.5rem auto 0.5rem 0;
+    font-size: 1.2rem;
+}
+
+.icon-logo{
+    text-align: center;
+    justify-content: center;
+    font-family: 'Water Brush', cursive;
+}
+
+.register{
+    display: inline-block;
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+    font-size: 1.5rem;
+}

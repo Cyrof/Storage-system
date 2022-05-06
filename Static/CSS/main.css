@@ -1,0 +1,75 @@
+/* css for navbar */
+body{
+    background-color: #e9e9e9;
+}
+
+.brand {
+    margin-left: 0.5rem;
+    font-family: 'Water Brush', cursive;
+}
+.nav-list>li {
+    margin: 20px;
+}
+
+.nav-list>li>a {
+    color: #bdbaba;
+    font-size: 1.2em;
+    text-decoration: none;
+}
+
+.nav-list>li>a:hover {
+    color: #e9e9e9;
+}
+
+
+
+.btn1 {
+    display: none;
+}
+
+.nav-list {
+    display: inline-flex;
+}
+
+.nav-bar {
+    width: 100%;
+    height: 68.8px;
+}
+
+.nav2 {
+    /* height: 68.8%; */
+    /* width: 30%; */
+    position: absolute;
+    right: 0%;
+    /* left: 80%; */
+}
+
+.input-group-append {
+    position: absolute;
+    height: 100%;
+    width: 0%;
+    right: 0%;
+}
+
+.input-group,
+.user-dropdown {
+    margin: 10px;
+    justify-content: space-between;
+}
+
+.nav-link-user {
+    padding: 10px;
+}
+
+.input-group {
+    margin-right: 25px;
+}
+
+.fa-user::before {
+    height: 50px;
+    width: 60px;
+}
+
+.row>div {
+    border: 2px solid black;
+}

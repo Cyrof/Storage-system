@@ -1,0 +1,45 @@
+{% extends 'base.html'%}
+{% block head %}
+<title>My Folder</title>
+{% endblock%}
+{% block body %}
+<!-- nav bar -->
+<div class="nar-bar">
+    <div class="nav-bar-container bg-dark" style="top: 0px;">
+        <a href="/my-folder" class="brand" style="font-size: 1.5em; color:#bdbaba; text-decoration:none;">HS</a>
+
+        <ul class="nav-list p-0" style="list-style: none; margin:auto; justify-content:center;">
+            <li class="nav-menu"><a class="btn1" role="button" data-bs-toggle="collapse" data-bs-target=".nav-tab">
+                    <i class="fa fa-bars"></i></a></li>
+            <li class="nav-tab"><a href="#">My Folder</a></li>
+            <li class="nav-tab"><a href="#">Shared With Me</a></li>
+            <li class="nav-tab"><a href="#">Recent</a></li>
+            <li class="nav-tab"><a href="#">Starred</a></li>
+            <li class="nav-tab"><a href="#">Trash</a></li>
+        </ul>
+
+        <div class="nav2 d-inline-flex">
+            <div class="input-group">
+                <input type="search" aria-describedby="button-addon1" class="form-input border-0 bg-light"
+                    placeholder="Search" style="width: 100%;">
+                <div class="input-group-append">
+                    <button id="button-addon1" class="btn text-primary bg-light" type="submit">
+                        <i class="fa fa-search" style="color: #bdbaba;"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="user-dropdown ">
+                <a href="#" class="nav-link-user dropdown-toggle mr-auto d-inline-block" id="userDropdown"
+                    role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                    data-bs-target="dropdown-menu" style="color: #bdbaba; height: 100%; width:100%;">
+                    <i class="fa fa-fw fa-user d-inline-block" style="color: #bdbaba;"></i>
+                </a>
+                <div class="dropdown-menu nav-user-dropdown dropdown-menu-left" aria-labelledby="userDropdownMenu">
+                    <a href="#" class="dropdown-item mr-auto"><i class="fa fa-fw fa-user"></i>Account</a>
+                    <a href="#" class="dropdown-item mr-auto"><i class="fa fa-sign-out"></i>Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
