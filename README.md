@@ -2,7 +2,7 @@
 Download file either clone to repo or download via zip file. 
 Once downloaded create venv then run run.py from folder
 
-#Create venv 
+# Create venv 
 ```console
 root@localhost:~$ pip install virtualenv
 root@localhost:~$ cd "folder-downloaded"
@@ -10,7 +10,7 @@ root@localhost:~$ python -m venv venv_name
 ```
 After creating venv, you need to activate it then run the run.py to install all libraries and packages
 
-#Activate venv and running run.py
+# Activate venv and running run.py
 ```console
 root@localhost:~$ venv_name\Scripts\activate
 (venv_name)root@localhost:~$py run.py
