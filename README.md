@@ -1,5 +1,5 @@
 # —Instructions—
-Download file either clone to repo or download via zip file. 
+Download file as zip file. 
 Once downloaded, create venv then run run.py inside the venv to install all requisites
 
 # Open terminal as administator (window)
