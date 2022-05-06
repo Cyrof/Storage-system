@@ -41,14 +41,25 @@ body{
     /* width: 30%; */
     position: absolute;
     right: 0%;
-    /* left: 80%; */
+    /* left: 25%; */
+}
+
+.form-input{
+    width: 15rem;
+    float: right;
+}
+
+@media (max-width: 600px){
+    .form-input{
+        width: 10rem;
+    }
 }
 
 .input-group-append {
     position: absolute;
     height: 100%;
     width: 0%;
-    right: 0%;
+    right: 1%;
 }
 
 .input-group,

@@ -17,6 +17,8 @@
 
 <body>
     {% block body %}
+    
+    {% endblock %}
     <!-- jQuery library -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
 
@@ -25,8 +27,7 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{url_for('static', filename='JS.main.js')}}"></script>
-    {% endblock %}
+    <script src="{{url_for('static', filename='JS/main.js')}}"></script>
 </body>
 
 </html>
