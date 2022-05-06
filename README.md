@@ -1,4 +1,4 @@
-#—-Instructions—-
+# —-Instructions—-
 Download file either clone to repo or download via zip file. 
 Once downloaded create venv then run run.py from folder
 
