@@ -1,6 +1,6 @@
 # —Instructions—
 Download file either clone to repo or download via zip file. 
-Once downloaded create venv then run run.py from folder you have to create a venv to store all libraries and packages
+Once downloaded, create venv then run run.py to install all requisites
 
 # Create venv 
 ```console
