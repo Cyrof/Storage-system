@@ -16,7 +16,7 @@ root@localhost:~$ python -m venv venv_name
 
 After creating venv, you need to activate it then run the run.py to install all requisites
 
-# Activate venv and running run.py
+# Activate venv and run run.py
 ```console
 root@localhost:~$ venv_name\Scripts\activate
 (venv_name)root@localhost:~$py run.py
