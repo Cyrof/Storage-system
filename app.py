@@ -39,9 +39,9 @@ def sign_up():
 # sign up page 2
 
 
-@app.route('/sign-up2')
+@app.route('/forgot-passwd')
 def sign_up2():
-    return render_template('sign-up2.html')
+    return render_template('forgot-passwd.html')
 
 # home page
 

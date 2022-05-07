@@ -7,26 +7,61 @@
 
 {% block body %}
 <main class="main-container">
-    <div class="sign-up-wrapper">
+    <div class="wrapper">
         <div class="icon-logo">
             <h2>HS</h2>
         </div>
-        <div class="sign-up-form-container">
-            <form action="/sign-up2" class="sign-up-form p-2">
-                <div class="register">
-                    <label for="">Sign Up</label>
+        <form action="/" class="form-container container-fluid">
+            <div class="icon-logo2 col-sm-12 mt-2 mb-2 p-0" style="text-align: center; font-size: 1.5rem">
+                <label>Sign Up</label>
+            </div>
+            <hr class="m-0">
+
+            <div class="fname-lname row mt-2 mb-2">
+                <div class="fname col-sm-6 p-2">
+                    <label class="fname-lab">First Name</label>
+                    <input type="text" class="fname-int" placeholder="First Name" required>
                 </div>
-                <br>
-                <label for="" class="signup-label" id="form-lab">First Name</label>
-                <input type="text" class="fName" id="form-int" placeholder="First Name" size="30">
-                <label for="" class="signup-label" id="form-lab">Last Name</label>
-                <input type="text" class="lName" id="form-int" placeholder="Last Name" size="30">
-                <label for="" class="signup-label" id="form-lab">Email</label>
-                <input type="text" class="email" id="form-int" placeholder="Email" size="30">
-                <br><br>
-                <button class="btn-sign-up" type="submit">Continue</button>
-            </form>
+
+                <div class="lname col-sm-6 p-2">
+                    <label class="lname-lab">Last Name</label>
+                    <input type="text" class="lname-int" placeholder="Last Name" required>
+                </div>
+            </div>
+
+            <div class="username-row row">
+                <div class="username col-sm-8 pl-2">
+                    <label class="username-lab">Username</label>
+                    <input type="text" class="username-int" placeholder="Username" required size="30">
+                </div>
+            </div>
+
+            <div class="email-row row">
+                <div class="email col-sm-10 p-2 mt-2">
+                    <label class="email-lab col-sm-10 p-0">Email</label>
+                    <input type="text" class="email-int" placeholder="Email" required size="40">
+                </div>
+            </div>
+
+            <div class="passwd-row row">
+                <div class="passwd col-sm-6 p-2">
+                    <label class="passwd-lab">Password</label>
+                    <input type="password" class="passwd-int" placeholder="Password" required>
+                </div>
+
+                <div class="cfm-passwd col-sm-6 p-2">
+                    <label class="cfm-passwd-lab">Confirm Password</label>
+                    <input type="password" class="cfm-passwd-int" placeholder="Confirm Password" required>
+                </div>
+            </div>
+
+            <div class="submit-bnt-row row">
+                <div class="submit-btn col-sm-12 p-2 mt-2" style="text-align: center;">
+                    <button type="submit" style="background-color:rgb(86, 124, 247); color:white; width: 8rem;">Submit</button>
+                </div>
+            </div>
+
         </div>
-    </div>
+    </form>
 </main>
 {% endblock %}

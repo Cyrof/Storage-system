@@ -80,7 +80,3 @@ body{
     height: 50px;
     width: 60px;
 }
-
-.row>div {
-    border: 2px solid black;
-}

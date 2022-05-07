@@ -60,49 +60,32 @@
 }
 
 /* sign-up page */
-.sign-up-wrapper{
+.wrapper {
     height: 100vh;
     display: flex;
     justify-content: center;
     flex-direction: column;
 }
 
-.sign-up-form-container{
-    top: 50%;
-    height: 21.5rem;
-    width: 20rem;
-    background-color: white;
+.form-container {
     border-radius: 10px;
-    box-shadow: 1px 1px 2px 2px grey;
-    align-items: center;
+    box-shadow: 1px 1px 2px 2px gray;
+    background-color: white;
+    height: 30rem;
+    width: 25rem;
 }
 
-#form-int{
-    display: inline-block;
-    width: 100%;
-}
-
-.btn-sign-up{
-    background-color: rgb(86, 124, 247);
-    color: white;
-    width: 100%;
-}
-
-#form-lab{
-    margin: 0.5rem auto 0.5rem 0;
+.fname-lab,
+.lname-lab,
+.username-lab,
+.email-lab,
+.passwd-lab,
+.cfm-passwd-lab {
     font-size: 1.2rem;
 }
 
-.icon-logo{
+.icon-logo {
     text-align: center;
     justify-content: center;
     font-family: 'Water Brush', cursive;
-}
-
-.register{
-    display: inline-block;
-    text-align: center;
-    justify-content: center;
-    width: 100%;
-    font-size: 1.5rem;
 }
