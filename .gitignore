@@ -130,3 +130,6 @@ dist
 .pnp.*
 
 HS_env
+secrets_folder.py
+__pycache__/secrets_folder.cpython-310.pyc
+__pycache__/secrets.cpython-310.pyc

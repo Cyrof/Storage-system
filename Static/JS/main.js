@@ -1,7 +1,7 @@
 // function to make nav responsive
-let expandcollapse = () =>{
-    if ($(window).width() < 900){
-        $(()=>{
+let expandcollapse = () => {
+    if ($(window).width() < 900) {
+        $(() => {
             // add class collapse to nav-tab
             let tab = $('.nav-tab');
             tab.addClass('collapse');
@@ -9,8 +9,8 @@ let expandcollapse = () =>{
             $('.btn1').show();
         });
     }
-    else if ($(window).width() >= 900){
-        $(()=>{
+    else if ($(window).width() >= 900) {
+        $(() => {
             // class collapse from nav-tab
             let tab = $('.nav-tab');
             tab.removeClass('collapse');
@@ -23,17 +23,17 @@ let expandcollapse = () =>{
 }
 
 // browse button function
-let nav_toggle = $('.btn1').on('click', ()=>{
-    if (!$('.nav-tab').hasClass('show')){
-        $(()=>{
+let nav_toggle = $('.btn1').on('click', () => {
+    if (!$('.nav-tab').hasClass('show')) {
+        $(() => {
             let table = $('.nav-list');
             table.css('flex-direction', 'column');
         });
     }
 });
 
+$(window).on('load', expandcollapse);
 $(window).on('resize', expandcollapse);
-
-$(document).on('ready', ()=>{
+$(document).on('ready', () => {
     $(window).on('resize', expandcollapse);
 });
