@@ -12,7 +12,7 @@ clr==1.0.3
 cog==0.0.3
 coloredlogs==15.0.1
 concurrencytest==0.1.2
-configparser==5.2.0
+ConfigParser==5.2.0
 cryptography==35.0.0
 curio==1.5
 cx_Oracle==8.3.0
