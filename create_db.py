@@ -10,6 +10,4 @@ new_db = mysql.connector.connect(
 
 mycursor = new_db.cursor()
 
-mycursor.execute("show")
-
-# mycursor.execute('create database StorageSystem')
+mycursor.execute('create database StorageSystem')
