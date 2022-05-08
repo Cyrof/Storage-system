@@ -3,11 +3,12 @@ import mysql.connector
 import secrets_folder
 import re
 
+# coonect to db
 db = mysql.connector.connect(
-    host="127.0.0.1",
-    user="Cyrof",
-    passwd="B@sketba1lF@te0331",
-    database="storagesystem"
+    host=secrets_folder.dbhost,
+    user=secrets_folder.dbuser,
+    passwd=secrets_folder.dbpass,
+    database=secrets_folder.dbname
 )
 
 mycursor = db.cursor(buffered=True)
