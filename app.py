@@ -1,22 +1,19 @@
 from flask import Flask, flash, redirect, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from urllib.parse import quote
 import secrets_folder
 import pymysql
 import time
+from database import *
 
-
-# conn = "mysql+pymysql://{0}:{1}@{2}/{3}".format(
-#     secrets_folder.dbuser, secrets_folder.dbpass, secrets_folder.dbhost, secrets_folder.dbname)
-# conn = f"mysql+pymysql:///{secrets_folder.dbuser}:{secrets_folder.dbpass}@{secrets_folder.dbhost}/{secrets_folder.dbname}"
-conn = "mysql+pymysql://%s:%s@%s:%s/%s" % (secrets_folder.dbuser, secrets_folder.dbpass, secrets_folder.dbhost, secrets_folder.dbport, secrets_folder.dbname)
-# conn = "mysql://root:B@sketba1l@192.168.86.31:3306/storagesystem"
+conn = "mysql+pymysql://%s:%s@%s:%s/%s" % (secrets_folder.dbuser, quote(
+    secrets_folder.dbpass), secrets_folder.dbhost, secrets_folder.dbport, secrets_folder.dbname)
 
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["SQLALCHEMY_DATABASE_URI"] = conn
 app.config['SECRET_KEY'] = secrets_folder.secret_key
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app=app)
 
 
@@ -27,7 +24,6 @@ class Users(db.Model):
     fname = db.Column(db.String(20))
     lname = db.Column(db.String(20))
     email = db.Column(db.String(225))
-
 
 
 # log in page
@@ -51,7 +47,7 @@ def sign_up():
         username = request.form['username']
         cfmPasswd = request.form['cfmpasswd']
         email = request.form['email']
-        new_user = Users(userId='a1', username=username,
+        new_user = Users(userId='a2', username=username,
                          passwd=cfmPasswd, fname=fname, lname=lname, email=email)
 
         try:
@@ -82,6 +78,4 @@ def home():
 
 
 if __name__ == "__main__":
-    # app.run(debug=True, host='0.0.0.0', port="8008")
-    print(conn)
-    print(db)
+    app.run(debug=True, host='0.0.0.0', port="8008")
