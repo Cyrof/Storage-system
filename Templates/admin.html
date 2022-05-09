@@ -11,15 +11,18 @@
         <div class="icon-container">
             <h1>HS</h1>
         </div>
-        <div class="container-form">
-            <form class="admin-form p-2" action="/" method="POST">
+        <div class="container-form container-fluid">
+            <form class="admin-form p-2" action="/" name="log-in-form" method="POST">
                 <div class="log-in">
                     <label for="">Log In</label>
                 </div>
+                {% if error %}
+                    <p style="color: red; font-size: 1.2rem"><strong>Error</strong>: {{error}}</p>
+                {% endif %}
                 <label class="label">Username/Email</label>
-                <input type="text" class="username" id="int" placeholder="Username/Email" size="30" required>
+                <input type="text" name="uname" class="username" id="int" placeholder="Username/Email" size="30" required>
                 <label class="label">Password</label>
-                <input type="password" class="password" id="int" placeholder="Password" size="30" required>
+                <input type="password" name="passwd" class="password" id="int" placeholder="Password" size="30" required>
                 <a href="#" class="f-password">Forgot password?</a>
                 <br>
                 <button class="btn-form mt-2" type="submit">Log in</button>

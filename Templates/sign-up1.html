@@ -11,6 +11,9 @@
         <div class="icon-logo">
             <h2>HS</h2>
         </div>
+        {% if error %}
+            <p style="color: red; font-size: 1.2rem"><strong>Error</strong>: {{error}}</p>
+        {% endif%}
         <form action="/sign-up" class="form-container container-fluid" name="form-sign-up" method="POST">
             <div class="icon-logo2 col-sm-12 mt-2 mb-2 p-0" style="text-align: center; font-size: 1.5rem">
                 <label>Sign Up</label>
@@ -53,6 +56,13 @@
                     <label class="cfm-passwd-lab">Confirm Password</label>
                     <input type="password" name="cfmpasswd" class="cfm-passwd-int" placeholder="Confirm Password" required>
                     <span id="msg"></span>
+                </div>
+            </div>
+
+            <div class="key-row row">
+                <div class="key col-lg-6 p-2">
+                    <label class="key-lab">Key</label>
+                    <input type="text" name="key" class="key-int" placeholder="Authentication" required>
                 </div>
             </div>
 

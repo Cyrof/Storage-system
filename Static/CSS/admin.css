@@ -16,7 +16,7 @@
 
 .container-form{
     top: 50%;
-    height: 18rem;
+    /* height: 18rem; */
     width: 20rem;
     background-color: white;
     border-radius: 10px;
@@ -89,7 +89,8 @@
 .username-lab,
 .email-lab,
 .passwd-lab,
-.cfm-passwd-lab {
+.cfm-passwd-lab,
+.key-lab {
     font-size: 1.2rem;
 }
 
