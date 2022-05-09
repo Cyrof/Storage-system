@@ -1,5 +1,5 @@
 import mysql.connector
-import secrets_folder
+import Scripts.secrets_folder as secrets_folder
 
 new_db = mysql.connector.connect(
     host=secrets_folder.dbhost, # usually host='localhost' if you user root to create db

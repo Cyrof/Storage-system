@@ -71,8 +71,17 @@
     border-radius: 10px;
     box-shadow: 1px 1px 2px 2px gray;
     background-color: white;
-    height: 30rem;
-    width: 25rem;
+    /* height: 30rem; */
+    width: 21rem;
+}
+
+.fname-int,
+.lname-int,
+.username-int,
+.email-int,
+.passwd-int,
+.cfm-passwd-int{
+    width: 100%;
 }
 
 .fname-lab,

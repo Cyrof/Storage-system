@@ -1,30 +1,25 @@
 from flask import Flask, flash, redirect, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from urllib.parse import quote
-import secrets_folder
+import Scripts.secrets_folder as secrets_folder
 import pymysql
 import time
-from database import *
+from werkzeug.security import generate_password_hash, check_password_hash
+from Scripts.database import *
 
-conn = "mysql+pymysql://%s:%s@%s:%s/%s" % (secrets_folder.dbuser, quote(
-    secrets_folder.dbpass), secrets_folder.dbhost, secrets_folder.dbport, secrets_folder.dbname)
+# conn = "mysql+pymysql://%s:%s@%s:%s/%s" % (secrets_folder.dbuser, quote(
+#     secrets_folder.dbpass), secrets_folder.dbhost, secrets_folder.dbport, secrets_folder.dbname)
 
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config["SQLALCHEMY_DATABASE_URI"] = conn
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app.config["SQLALCHEMY_DATABASE_URI"] = conn
 app.config['SECRET_KEY'] = secrets_folder.secret_key
-db = SQLAlchemy(app=app)
+# db = SQLAlchemy(app=app)
+# db.init_app(app=app)
 
-
-class Users(db.Model):
-    userId = db.Column(db.String(20), primary_key=True)
-    username = db.Column(db.String(50))
-    passwd = db.Column(db.String(25))
-    fname = db.Column(db.String(20))
-    lname = db.Column(db.String(20))
-    email = db.Column(db.String(225))
-
+# create db.py obj
+db_function = db_fun()
 
 # log in page
 
@@ -38,21 +33,29 @@ def index():
 
 @app.route('/sign-up', methods=['POST', 'GET'])
 def sign_up():
+    id = db_function.create_id()
+
     if request.method == "POST":
         req = request.form
         print(req)
-
         fname = request.form['fname']
         lname = request.form['lname']
         username = request.form['username']
-        cfmPasswd = request.form['cfmpasswd']
+        # cfmPasswd = request.form['cfmpasswd']
+        cfmPasswd = generate_password_hash(request.form['cfmpasswd'], 'sha256', salt_length=8)
         email = request.form['email']
-        new_user = Users(userId='a2', username=username,
+        # id = db_function.create_id()
+        print(cfmPasswd)
+        
+        new_user = Users(userId=id, username=username,
                          passwd=cfmPasswd, fname=fname, lname=lname, email=email)
+        
+        
 
         try:
             db.session.add(new_user)
             db.session.commit()
+            db.session.remove()
             return redirect('/')
         except:
             flash('There was an issue adding user')
