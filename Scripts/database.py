@@ -1,8 +1,7 @@
-import imp
 import string
 from psutil import users
 import re
-from Scripts.config import *
+from Scripts.config import db
 
 
 class Users(db.Model):

@@ -1,23 +1,27 @@
-from flask import Flask, current_app, flash, redirect, render_template, request
+from flask import Flask, flash, redirect, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from urllib.parse import quote
 import Scripts.secrets_folder as secrets_folder
 import pymysql
 import time
 from werkzeug.security import generate_password_hash, check_password_hash
+from Scripts.config import db
 from Scripts.database import *
 
-# conn = "mysql+pymysql://%s:%s@%s:%s/%s" % (secrets_folder.dbuser, quote(
-#     secrets_folder.dbpass), secrets_folder.dbhost, secrets_folder.dbport, secrets_folder.dbname)
+conn = "mysql+pymysql://%s:%s@%s:%s/%s" % (secrets_folder.dbuser, quote(
+    secrets_folder.dbpass), secrets_folder.dbhost, secrets_folder.dbport, secrets_folder.dbname)
 
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# app.config["SQLALCHEMY_DATABASE_URI"] = conn
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config["SQLALCHEMY_DATABASE_URI"] = conn
 app.config['SECRET_KEY'] = secrets_folder.secret_key
 # db = SQLAlchemy(app=app)
 # db.init_app(app=app)
 
+db.init_app(app=app)
+with app.app_context():
+    db.create_all()
 
 # create db.py obj
 db_function = db_fun()
