@@ -1,4 +1,4 @@
-from flask import Flask, flash, redirect, render_template, request
+from flask import Flask, current_app, flash, redirect, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from urllib.parse import quote
 import Scripts.secrets_folder as secrets_folder
@@ -17,6 +17,7 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config['SECRET_KEY'] = secrets_folder.secret_key
 # db = SQLAlchemy(app=app)
 # db.init_app(app=app)
+
 
 # create db.py obj
 db_function = db_fun()
