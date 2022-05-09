@@ -3,7 +3,7 @@ from psutil import users
 import re
 from Scripts.config import db
 
-
+# Users table
 class Users(db.Model):
     userId = db.Column(db.String(20), primary_key=True)
     username = db.Column(db.String(50))
@@ -62,22 +62,3 @@ if __name__ == "__main__":
     data = db_fun()
     id = data.create_id()
     print(id)
-
-
-    # while True:
-    #     data = db_fun()
-    #     print("show id [1]")
-    #     print("show new id [2]")
-    #     print("exit [0]")
-    #     choice = int(input("Enter input: "))
-    #     print("\n\n")
-    #     if choice == 1:
-    #         print(create_id())
-    #     elif choice == 0:
-    #         break
-    #     elif choice == 2:
-    #         mycursor.execute('select userId from users')
-    #         for x in mycursor:
-    #             print(x)
-    #     else:
-    #         continue
