@@ -133,3 +133,15 @@
 .key-req-flash h3{
     color: rgb(5, 221, 5);
 }
+
+.key-req-flash{
+    text-align: center;
+}
+
+.fade, .show {
+    opacity: 1;
+}
+
+.form-group label{
+    font-size: 1.2rem;
+}

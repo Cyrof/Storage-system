@@ -76,7 +76,7 @@ class db_fun():
         Id_list = [id[x].uid for x in range(len(id))]
 
         if Id_list == []:
-            newId = 0
+            newId = 1
         else:
             newId = int(Id_list[-1]) + 1
         return newId

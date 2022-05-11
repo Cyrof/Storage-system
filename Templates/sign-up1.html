@@ -6,18 +6,29 @@
 {% endblock %}
 
 {% block body %}
-<main class="main-container">
+<main class="main-container" onload="flash_msg()">
     <div class="wrapper">
         <div class="icon-logo">
             <h2>HS</h2>
         </div>
         {% with messages = get_flashed_messages() %}
-        {% if messages %}
+        {% if messages%}
         {% for message in messages %}
         {{ message | safe }}
         {% endfor %}
         {% endif %}
         {% endwith %}
+        <script>
+            function flash_msg(){
+                if ("{{flash_message}}" == "True"){
+                    countdown();
+                }
+                else{
+                    let messages = get_flashed_messages();
+                    write_content(messages);
+                }
+            }
+        </script>
         <form action="/sign-up" class="form-container container-fluid" name="form-sign-up" method="POST">
             <div class="icon-logo2 col-sm-12 mt-2 mb-2 p-0" style="text-align: center; font-size: 1.5rem">
                 <label>Sign Up</label>
@@ -46,7 +57,7 @@
             <div class="email-row row">
                 <div class="email col-lg-10 p-2 mt-2">
                     <label class="email-lab col-sm-10 p-0">Email</label>
-                    <input type="text" name="email" class="email-int" placeholder="Email" required size="40">
+                    <input type="email" name="email" class="email-int" placeholder="Email" required size="40">
                 </div>
             </div>
 
@@ -92,4 +103,3 @@
                 </div> -->
 </main>
 {%endblock%}
-

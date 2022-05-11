@@ -20,11 +20,13 @@
             {% if error %}
             <p style="color: red; font-size: 1.2rem"><strong>Error</strong>: {{error}}</p>
             <div class="error-box">
-                <p><a href="/" style="text-decoration: underline;">Click here</a> to go back to log in page to log in</p>
+                <p><a href="/" style="text-decoration: underline;">Click here</a> to go back to log in page to log in
+                </p>
             </div>
             {% endif %}
             {% with messages = get_flashed_messages() %}
             {% if messages %}
+            
             {% for message in messages %}
             {{ message | safe }}
             {% endfor %}
@@ -38,13 +40,13 @@
             <div class="email-row row">
                 <div class="email col-lg-12 p-2">
                     <label class="rk-email-lab">Email</label>
-                    <input type="text" name="email" class="rk-email-int" placeholder="Email" required>
+                    <input type="email" name="email" class="rk-email-int" placeholder="Email" required>
                 </div>
             </div>
             <div class="cfm-email-row row">
                 <div class="cfm-email col-lg-12 p-2">
                     <label class="cfm-email-lab">Confirm Email</label>
-                    <input type="text" name="cfm-email" class="cfm-email-int" placeholder="Confirm Email" required>
+                    <input type="email" name="cfm-email" class="cfm-email-int" placeholder="Confirm Email" required>
                 </div>
                 <span id="rk-msg"></span>
             </div>

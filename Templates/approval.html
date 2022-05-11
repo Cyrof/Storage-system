@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block head %}
+<title>Adminitration Approval</title>
+<link rel="stylesheet" href="{{url_for('static', filename='CSS/admin.css')}}">
+{% endblock %}
+{% block body %}
+<main class="main-container">
+    <script type="text/javascript">
+        window.onload = (event) => {
+            if ("{{ flash_message }}" == "True") {
+                console.log('hi');
+                $('#modal-form').modal('show');
+            }
+            else if ("{{ flash_message }}" == "False") {
+                $('#modal-form').modal('show');
+                msg = "Username, Email or Password is incorrect."
+                $('.errormsg').html(`<p style="color: red; font-size: 1.2rem"><strong>Error</strong>: ${msg} </p>`).css('color', 'red');
+            }
+        }
+
+    </script>
+    <div class="modal fade" id="modal-form" role="dialog" aria-hidden="true" data-backdrop="static"
+        data-keyboard="false">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Required Admin Login</h3>
+                </div>
+                <div class="modal-body">
+                    <form action="/administration" method="POST">
+                        <div class="errormsg"></div>
+                        <div class="link">
+                            <p>
+                                <a href="/">Click here</a>
+                                to go back to log in Page
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label>Username/Email</label>
+                            <input type="text" class="form-control" name="uname_email" id="username/email-input"
+                                aria-describedby="email-help" placeholder="Username/Email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" class="form-control" name="passwd" id="input-password"
+                                placeholder="Password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table id="data" class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Email</th>
+                <th scope="col">Approve</th>
+                <th scope="col">Deny</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for email in emails %}
+                <tr>
+                    <td>{{email}}</td>
+                    <td><button type="button" class="btn " style="background-color: rgb(6, 206, 6); color: white">Approve</button></td>
+                    <td><button type="button" class="btn " style="background-color: red; color: white">Deny</button></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</main>
+{% endblock %}
