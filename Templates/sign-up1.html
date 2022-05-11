@@ -11,9 +11,13 @@
         <div class="icon-logo">
             <h2>HS</h2>
         </div>
-        {% if error %}
-            <p style="color: red; font-size: 1.2rem"><strong>Error</strong>: {{error}}</p>
-        {% endif%}
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        {{ message | safe }}
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
         <form action="/sign-up" class="form-container container-fluid" name="form-sign-up" method="POST">
             <div class="icon-logo2 col-sm-12 mt-2 mb-2 p-0" style="text-align: center; font-size: 1.5rem">
                 <label>Sign Up</label>
@@ -47,33 +51,45 @@
             </div>
 
             <div class="passwd-row row">
-                <div class="passwd col-lg-6 p-2">
+                <div class="passwd col-lg-5 p-1">
                     <label class="passwd-lab">Password</label>
                     <input type="password" name="passwd" class="passwd-int" placeholder="Password" required>
                 </div>
 
-                <div class="cfm-passwd col-lg-6 p-2">
+                <div class="cfm-passwd col-lg-6 p-1">
                     <label class="cfm-passwd-lab">Confirm Password</label>
-                    <input type="password" name="cfmpasswd" class="cfm-passwd-int" placeholder="Confirm Password" required>
+                    <input type="password" name="cfmpasswd" class="cfm-passwd-int" placeholder="Confirm Password"
+                        required>
                     <span id="msg"></span>
                 </div>
             </div>
 
             <div class="key-row row">
                 <div class="key col-lg-6 p-2">
-                    <label class="key-lab">Key</label>
+                    <label class="key-lab">Key <a tabindex="0" role="button" class="btn p-0" data-toggle="popover"
+                            data-trigger="focus" data-placement="right" data-style="mypops" id="pops"><i
+                                class="fa fa-question-circle"></i></a></label>
                     <input type="text" name="key" class="key-int" placeholder="Authentication" required>
+                </div>
+                <div class="para col-lg-6 p-2">
+                    <div class="popover-para invisible">
+                        <p>Don't have a key? <a href="/req-key">Click here</a> to request one from the administrator</p>
+                    </div>
                 </div>
             </div>
 
             <div class="submit-bnt-row row">
                 <div class="submit-btn col-lg-12 p-2 mt-2" style="text-align: center;">
-                    <button type="submit" id="sign-up-btn" style="background-color:rgb(86, 124, 247); color:white; width: 8rem;">Submit</button>
+                    <button type="submit" id="sign-up-btn"
+                        style="background-color:rgb(86, 124, 247); color:white; width: 8rem;" disabled>Submit</button>
                 </div>
             </div>
+        </form>
+    </div>
 
-        </div>
-    </form>
+    <!-- <div class="popover-para ">
+                    <p>Don't have a key? <a href="#">Click here</a> to request one from administrator</p>
+                </div> -->
 </main>
+{%endblock%}
 
-{% endblock %}

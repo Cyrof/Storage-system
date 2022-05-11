@@ -61,7 +61,7 @@
 
 /* sign-up page */
 .wrapper {
-    height: 100vh;
+    height: 100%;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -80,7 +80,9 @@
 .username-int,
 .email-int,
 .passwd-int,
-.cfm-passwd-int{
+.cfm-passwd-int,
+.rk-email-int,
+.cfm-email-int{
     width: 100%;
 }
 
@@ -90,7 +92,9 @@
 .email-lab,
 .passwd-lab,
 .cfm-passwd-lab,
-.key-lab {
+.key-lab,
+.rk-email-lab,
+.cfm-email-lab {
     font-size: 1.2rem;
 }
 
@@ -98,4 +102,34 @@
     text-align: center;
     justify-content: center;
     font-family: 'Water Brush', cursive;
+}
+
+/* question mark pop up */
+.show{
+    box-shadow: 2px 2px grey;
+}
+
+/* request-key */
+.req-container-row{
+    border: 1px black;
+}
+
+.cfm-email-row #rk-msg{
+    margin-inline: auto;
+}
+
+.error-box, .error-box a{
+    border: 1px black;
+    /* border-radius: 10px; */
+    /* background-color: rgba(245, 91, 91, 0.37); */
+    color: red;
+}
+
+.key-req-flash{
+    border: 2px black;
+    border-radius: 10px;
+}
+
+.key-req-flash h3{
+    color: rgb(5, 221, 5);
 }

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Req-key</title>
+<link rel="stylesheet" href="{{url_for('static', filename='CSS/admin.css')}}">
+{% endblock %}
+
+{% block body %}
+<main class="main-container">
+    <div class="wrapper">
+        <div class="icon-logo">
+            <h2>HS</h2>
+        </div>
+
+        <form action="/req-key" class="form-container container-fluid" name="form-req-key" method="POST">
+            <div class="icon-logo2 col-sm-12 mt-2 mb-2 p-0" style="text-align: center; font-size: 1.5rem">
+                <label>Request Unique Key</label>
+            </div>
+            <hr class="m-0">
+            {% if error %}
+            <p style="color: red; font-size: 1.2rem"><strong>Error</strong>: {{error}}</p>
+            <div class="error-box">
+                <p><a href="/" style="text-decoration: underline;">Click here</a> to go back to log in page to log in</p>
+            </div>
+            {% endif %}
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            {{ message | safe }}
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            <div class="req-key-para-row row">
+                <div class="req-key-para col-lg-12 p-2" style="text-align: center; font-size:1.1rem">
+                    <p>Enter your email to request for a key from administrator to sign up</p>
+                </div>
+            </div>
+            <div class="email-row row">
+                <div class="email col-lg-12 p-2">
+                    <label class="rk-email-lab">Email</label>
+                    <input type="text" name="email" class="rk-email-int" placeholder="Email" required>
+                </div>
+            </div>
+            <div class="cfm-email-row row">
+                <div class="cfm-email col-lg-12 p-2">
+                    <label class="cfm-email-lab">Confirm Email</label>
+                    <input type="text" name="cfm-email" class="cfm-email-int" placeholder="Confirm Email" required>
+                </div>
+                <span id="rk-msg"></span>
+            </div>
+            <div class="req-key-row row">
+                <div class="req-key-submit-btn col-lg-12 p-2 mt-2" style="text-align: center;">
+                    <button type="submit" id="req-key-btn"
+                        style="background-color:rgb(86, 124, 247); color:white; width: 8rem;" disabled>Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+{% endblock%}

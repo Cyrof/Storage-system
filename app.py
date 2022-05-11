@@ -1,13 +1,15 @@
 # import libs
-from flask import Flask, flash, redirect, render_template, request
+from flask import Flask, flash, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 from urllib.parse import quote
 import Scripts.secrets_folder as secrets_folder
 import pymysql
-import time
+from flask import Markup
 from werkzeug.security import generate_password_hash, check_password_hash
 from Scripts.config import db
 from Scripts.database import *
+from flask_mail import Mail, Message
+from administation import create_key
 
 # create connection string
 conn = "mysql+pymysql://%s:%s@%s:%s/%s" % (secrets_folder.dbuser, quote(
@@ -20,6 +22,15 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["SQLALCHEMY_DATABASE_URI"] = conn
 app.config['SECRET_KEY'] = secrets_folder.secret_key
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = secrets_folder.email
+app.config['MAIL_PASSWORD'] = secrets_folder.emailPass
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+
+# initialise mail
+mail = Mail(app)
 
 # initialise db and create tables after initialising db
 db.init_app(app=app)
@@ -38,7 +49,7 @@ def index():
         # get data from form from post request
         uname_email = request.form['uname']
         passwd = request.form['passwd']
-        
+
         # get user data from database
         user = Users.query.all()
         users_uname = [user[x].username for x in range(len(user))]
@@ -47,13 +58,15 @@ def index():
 
         # check if username or email is in db
         if uname_email in users_uname_email:
-            user_passwd = db.session.query(Users.passwd).filter_by( # get user passwd from db based on username 
+            user_passwd = db.session.query(Users.passwd).filter_by(  # get user passwd from db based on username
                 username=uname_email).first()
-            if user_passwd == None: # if statement to check if user_passwd is None
-                user_passwd = db.session.query( # get user password from db based on email
+            if user_passwd == None:  # if statement to check if user_passwd is None
+                user_passwd = db.session.query(  # get user password from db based on email
                     Users.passwd).filter_by(email=uname_email).first()
-            user_passwd = user_passwd[0] # set user_passwd var to passwd hash string
-            check_passwd = check_password_hash(user_passwd, passwd) # check if user inputted passwd is the same as in db
+            # set user_passwd var to passwd hash string
+            user_passwd = user_passwd[0]
+            # check if user inputted passwd is the same as in db
+            check_passwd = check_password_hash(user_passwd, passwd)
             if check_passwd == True:
                 return redirect('/my-folder')
             else:
@@ -72,6 +85,11 @@ def index():
 def sign_up():
     # if statement to check if post request is sent
     if request.method == "POST":
+        # get data from authentication table
+        au = Authenticate.query.all()
+        au_email = [au[x].email for x in range(len(au))]
+        au_key = [au[x].key for x in range(len(au))]
+        au_data = au_email + au_key
         # get data from form in post request and set it to var
         fname = request.form['fname']
         lname = request.form['lname']
@@ -79,11 +97,35 @@ def sign_up():
         cfmPasswd = generate_password_hash(
             request.form['cfmpasswd'], 'sha256', salt_length=8)
         email = request.form['email']
-        id = db_function.create_id()
+        id = db_function.create_uid()
+        key = request.form['key']
 
-        # create new users obj
-        new_user = Users(userId=id, username=username,
-                         passwd=cfmPasswd, fname=fname, lname=lname, email=email)
+        # get User info from users table
+        users = Users.query.all()
+        users_email = [users[x].email for x in range(len(users))]
+
+        # get confirmation status from db
+        au_confirm = Authenticate.query.filter_by(email=email).first()
+        au_confirm = au_confirm.confirmation_status
+        # if else to check if user has all prerequisite to sign up
+        if email in au_data and key in au_data and au_confirm == "pending":
+            # create new users obj
+            new_user = Users(userId=id, username=username,
+                             passwd=cfmPasswd, fname=fname, lname=lname, email=email)
+            # if statement to check if sign up email is same as admin email therefore giving it admin status
+            if email == secrets_folder.adminEmail:
+                new_user = Users(userId=id, username=username,
+                             passwd=cfmPasswd, fname=fname, lname=lname, email=email, authority='admin')
+            
+            status_update = Authenticate.query.filter_by(email=email).first()
+            status_update.confirmation_status = 'approved'
+        elif email in users_email:
+            error = 'Email is already in use'
+            flash(Markup('<p style="color:red;">Email is already in use, <a href="/" style="text-decoration:underline; color:red;">Click me</a> to return to log in page to log in instead</p>'))
+            return render_template('sign-up1.html')
+
+
+
         # try to add user and commit if not except error and refresh page and show error msg
         try:
             db.session.add(new_user)
@@ -92,17 +134,59 @@ def sign_up():
             return redirect('/')
         except:
             error = 'There was an issue adding user'
-            return render_template('/sign-up', error=error)
+            flash(Markup(error))
+            return redirect(url_for('/sign-up'))
 
     return render_template('sign-up1.html')
 
 
-# sign up page 2
+# forgot password page
 
 
 @app.route('/forgot-passwd')
 def sign_up2():
     return render_template('forgot-passwd.html')
+
+# request key page
+
+
+@app.route('/req-key', methods=['GET', 'POST'])
+def req_key():
+    if request.method == "POST":
+        cfm_email = request.form['cfm-email']
+        id = db_function.create_eid()
+        key = create_key.key_generator()
+
+        # get user data from db
+        user = Users.query.all()
+        users_email = [user[x].email for x in range(len(user))]
+
+        if cfm_email in users_email:
+            error = 'Email is already in use.'
+            return render_template('req-key.html', error=error)
+
+        authentication = Authenticate(uid=id, email=cfm_email, key=key)
+
+        if cfm_email == secrets_folder.adminEmail:
+            authentication = Authenticate(uid=id, email=cfm_email, key=key, confirmation_status='pending')
+        
+        try:
+            db.session.add(authentication)
+            db.session.commit()
+            db.session.remove()
+            text = "<div class="'key-req-flash'"><p><h3>Key request successful</h3>You will receive an email containing the key to sign up. <br> Request will take up to 15 minutes to 24 hours. <br> <a href='/'>Click me</a> to go back to login page</p></div>"
+            flash(Markup(text))
+            return redirect(url_for('/req-key'))
+        except:
+            error = 'There was an error requesting key'
+            return render_template('req-key.html', error=error)
+    # msg = Message("hi", sender=secrets_folder.email, recipients=['furiousdragon93@gmail.com'])
+    # msg.body = "Hi this is a test for auto email from python"
+    # mail.send(msg)
+    # print(msg)
+    # print('msg sent')
+    # return redirect('/')
+    return render_template('req-key.html')
 
 # home page
 
