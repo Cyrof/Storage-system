@@ -1,8 +1,11 @@
 # import libs
-from flask import Flask, flash, redirect, render_template, request, url_for
+import email
+from flask import Flask, flash, redirect, render_template, request, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from urllib.parse import quote
+import flask_sqlalchemy
 import Scripts.secrets_folder as secrets_folder
+from flask_session import Session
 import pymysql
 from flask import Markup
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -28,6 +31,8 @@ app.config['MAIL_USERNAME'] = secrets_folder.email
 app.config['MAIL_PASSWORD'] = secrets_folder.emailPass
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
+app.config['SESSION_TYPE'] = 'sqlalchemy'
+
 
 # initialise mail
 mail = Mail(app)
@@ -39,6 +44,14 @@ with app.app_context():
 
 # create db.py obj
 db_function = db_fun()
+
+# initialise session to use sqlalchemy
+app.config['SESSION_SQLALCHEMY_TABLE'] = 'sessions'
+app.config['SESSION_SQLALCHEMY'] = db
+
+sess = Session(app)
+with app.app_context():
+    sess.app.session_interface.db.create_all()
 
 
 # log in page
@@ -60,11 +73,22 @@ def index():
         if uname_email in users_uname_email:
             user_passwd = db.session.query(Users.passwd).filter_by(  # get user passwd from db based on username
                 username=uname_email).first()
+
             if user_passwd == None:  # if statement to check if user_passwd is None
                 user_passwd = db.session.query(  # get user password from db based on email
                     Users.passwd).filter_by(email=uname_email).first()
+
+                uname_email = db.session.query(  # get user name from email
+                    Users.username).filter_by(email=uname_email).first()
+                uname_email = uname_email[0]
+
+            session['USER'] = uname_email
+
             # set user_passwd var to passwd hash string
             user_passwd = user_passwd[0]
+
+            # create a session into db
+
             # check if user inputted passwd is the same as in db
             check_passwd = check_password_hash(user_passwd, passwd)
             if check_passwd == True:
@@ -199,12 +223,7 @@ def req_key():
         except:
             error = 'There was an error requesting key'
             return render_template('req-key.html', error=error)
-    # msg = Message("hi", sender=secrets_folder.email, recipients=['furiousdragon93@gmail.com'])
-    # msg.body = "Hi this is a test for auto email from python"
-    # mail.send(msg)
-    # print(msg)
-    # print('msg sent')
-    # return redirect('/')
+    
     return render_template('req-key.html')
 
 # administration page
@@ -212,27 +231,43 @@ def req_key():
 
 @app.route('/administration', methods=['GET', 'POST'])
 def administration():
+
+    # get all waiting emails
+    au = Authenticate.query.all()
+    wait_email = [au[x].email for x in range(
+        len(au)) if au[x].confirmation_status == 'waiting']
+
+    if session.get('USER'):
+        user = session['USER']
+        user_status = db.session.query(
+            Users.authority).filter_by(username=user).first()[0]
+
+        if user_status == 'admin':
+            return render_template('approval.html', emails=au)
+
     # if statement to get post request data
     if request.method == "POST":
         # get email and pass from form
         uname_email = request.form.get('uname_email')
         passwd = request.form.get('passwd')
 
-        # get all waiting emails
-        au = Authenticate.query.all()
-        wait_email = [au[x].email for x in range(len(au)) if au[x].confirmation_status == 'waiting']
-
         user_passwd = db.session.query(Users.passwd).filter_by(  # get user passwd from db based on username
             username=uname_email).first()
         if user_passwd == None:  # if statement to check if user_passwd is None
             user_passwd = db.session.query(  # get user password from db based on email
                 Users.passwd).filter_by(email=uname_email).first()
+
+            uname_email = db.session.query(  # get user name from email
+                Users.username).filter_by(email=uname_email).first()
+            uname_email = uname_email[0]
+
+        session['USER'] = uname_email
         # set user_passwd var to passwd hash string
         user_passwd = user_passwd[0]
         # check if user inputted passwd is the same as in db
         check_passwd = check_password_hash(user_passwd, passwd)
         if check_passwd == True:
-            return render_template('approval.html', emails=wait_email)
+            return render_template('approval.html', emails=au)
         else:
             return render_template('approval.html', flash_message="False")
 
@@ -243,8 +278,41 @@ def administration():
 
 @app.route('/my-folder')
 def home():
-    return render_template('my-folder.html')
+    if session.get('USER'):
+        user = session['USER']
+        return render_template('my-folder.html', user=user)
+    else:
+        return render_template('my-folder.html')
 
+
+@app.route('/logout')
+def logout():
+    # get user sess
+    session.pop('USER', None)
+    return redirect('/')
+
+@app.route('/send_mail/<string:bool>/<int:id>')
+def send_mail(bool, id):
+    # return redirect('/administration')
+    status_update = Authenticate.query.filter_by(uid=id).first()
+    email = status_update.email
+    key = status_update.key
+    if bool == 'approve':
+        msg = Message("Key Request", sender=secrets_folder.email, recipients=[email])
+        msg.html = f"<div style='text-align:center'><h3 style='color:rgb(5, 221, 5)'>Your request for unique key has been approved by the administrator</h3><p>Your unique key is : {key}</p><p>Enter this key when you signup</p></div>"
+        mail.send(msg)
+        print('Email sent')
+        status_update.confirmation_status = 'approved'
+        return redirect('/administration')
+    elif bool == 'deny':
+        msg = Message("Key Request", sender=secrets_folder.email, recipients=[email])
+        msg.html = "<div style='text-align:center'><h3 style='color:red'>Your request for unique key has been denied</h3></div>"
+        mail.send(msg)
+        print('Email sent')
+        status_update.confirmation_status = 'Deny'
+        return redirect('/administration')
+    
+    return redirect('/administration')
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port="8008")

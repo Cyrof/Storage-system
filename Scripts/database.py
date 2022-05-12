@@ -26,6 +26,11 @@ class Authenticate(db.Model):
     confirmation_status = db.Column(db.String(50), default='waiting')
 
 
+# session table
+# class Sessions(db.Model):
+#     __table_args__ = {'extend_existing': True}
+
+
 # class that contains all db functions / arithmetic
 class db_fun():
 

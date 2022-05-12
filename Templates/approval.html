@@ -4,17 +4,22 @@
 <link rel="stylesheet" href="{{url_for('static', filename='CSS/admin.css')}}">
 {% endblock %}
 {% block body %}
+<header>
+    <a href="/logout" class="btn btn-primary" style="float:right">Log out</a>
+</header>
 <main class="main-container">
     <script type="text/javascript">
         window.onload = (event) => {
             if ("{{ flash_message }}" == "True") {
-                console.log('hi');
                 $('#modal-form').modal('show');
             }
             else if ("{{ flash_message }}" == "False") {
                 $('#modal-form').modal('show');
                 msg = "Username, Email or Password is incorrect."
                 $('.errormsg').html(`<p style="color: red; font-size: 1.2rem"><strong>Error</strong>: ${msg} </p>`).css('color', 'red');
+            }
+            else if ("{{ flash_message }}" == "pass") {
+
             }
         }
 
@@ -62,11 +67,14 @@
         </thead>
         <tbody>
             {% for email in emails %}
-                <tr>
-                    <td>{{email}}</td>
-                    <td><button type="button" class="btn " style="background-color: rgb(6, 206, 6); color: white">Approve</button></td>
-                    <td><button type="button" class="btn " style="background-color: red; color: white">Deny</button></td>
-                </tr>
+            {% if email.confirmation_status == 'waiting' %}
+            <tr>
+                <td>{{email.email}}</td>
+                <td><a href="/send_mail/approve/{{email.uid}}" class="btn "
+                        style="background-color: rgb(6, 206, 6); color: white">Approve</a></td>
+                <td><a href="/send_mail/deny/{{email.uid}}" class="btn " style="background-color: red; color: white">Deny</a></td>
+            </tr>
+            {% endif %}
             {% endfor %}
         </tbody>
     </table>
