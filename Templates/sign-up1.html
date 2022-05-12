@@ -19,13 +19,9 @@
         {% endif %}
         {% endwith %}
         <script>
-            function flash_msg(){
-                if ("{{flash_message}}" == "True"){
+            window.onload = (event) => {
+                if ("{{ flash_message }}" == "True") {
                     countdown();
-                }
-                else{
-                    let messages = get_flashed_messages();
-                    write_content(messages);
                 }
             }
         </script>
@@ -34,7 +30,7 @@
                 <label>Sign Up</label>
             </div>
             <hr class="m-0">
-
+            <div class="redirect-text"></div>
             <div class="fname-lname row mt-2 mb-2">
                 <div class="fname col-lg-6 p-2">
                     <label class="fname-lab">First Name</label>

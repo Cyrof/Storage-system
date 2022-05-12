@@ -1,0 +1,9 @@
+Dear Admin,
+
+There are uses who are awaiting approval for the request of unique key.
+
+To approve, click on the following link:
+
+{{ url_for('administration', token=token, _external=True) }}
+
+Auto generated message

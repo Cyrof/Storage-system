@@ -37,12 +37,15 @@ $('.rk-email-int, .cfm-email-int').on('keyup', () => {
 // countdown to redirect function 
 function countdown() {
     var time = 3;
-    setInterval(function () {
-        let msg = `<div class='countdown-content'><h3>Sign up successfull</h3><p>Redirecting to login page in ${time}</p></div>`;
-        document.write(msg);
-        time--
-        if (time === 0) {
-            window.location.replace('/')
+    $('.redirect-text').html("<h3>Sign up successful</h3><br><p>Redirecting to log in page in<p id = 'redirect-text'></p></p>")
+    const interval = setInterval(() =>{
+        console.log(time);
+        $('#redirect-text').html(time);
+        time--;
+
+        if (time < 0){
+            clearInterval(interval);
+            window.location.href='/';
         }
     }, 1000);
 }
@@ -52,7 +55,3 @@ function write_content(msg) {
     document.write(msg)
 }
 
-// function to show modal onload
-// function load() {
-//     $('#modal-form').modal('show');
-// }
