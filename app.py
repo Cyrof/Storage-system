@@ -1,5 +1,7 @@
 # import libs
-import email
+import jwt
+import time
+from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, flash, redirect, render_template, request, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from urllib.parse import quote
@@ -12,7 +14,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from Scripts.config import db
 from Scripts.database import *
 from flask_mail import Mail, Message
-from administation import create_key
+from administration import create_key
 
 # create connection string
 conn = "mysql+pymysql://%s:%s@%s:%s/%s" % (secrets_folder.dbuser, quote(
@@ -156,14 +158,13 @@ def sign_up():
             db.session.add(new_user)
             db.session.commit()
             db.session.remove()
-            flash('True')
-            return redirect('/')
+            return render_template('sign-up1.html', flash_message='True')
         except:
             error = 'There was an issue adding user'
             flash(Markup(error))
             return redirect('sign-up')
 
-    return render_template('sign-up1.html')
+    return render_template('sign-up1.html', flash_message='False')
 
 
 # forgot password page
@@ -223,7 +224,7 @@ def req_key():
         except:
             error = 'There was an error requesting key'
             return render_template('req-key.html', error=error)
-    
+
     return render_template('req-key.html')
 
 # administration page
@@ -291,28 +292,61 @@ def logout():
     session.pop('USER', None)
     return redirect('/')
 
+
 @app.route('/send_mail/<string:bool>/<int:id>')
 def send_mail(bool, id):
-    # return redirect('/administration')
+    # get email and key
     status_update = Authenticate.query.filter_by(uid=id).first()
     email = status_update.email
     key = status_update.key
+    # if else to check if admin approve or deny
     if bool == 'approve':
-        msg = Message("Key Request", sender=secrets_folder.email, recipients=[email])
+        # craft email and send it then redirect page
+        msg = Message("Key Request", sender=secrets_folder.email,
+                      recipients=[email])
         msg.html = f"<div style='text-align:center'><h3 style='color:rgb(5, 221, 5)'>Your request for unique key has been approved by the administrator</h3><p>Your unique key is : {key}</p><p>Enter this key when you signup</p></div>"
         mail.send(msg)
         print('Email sent')
         status_update.confirmation_status = 'approved'
         return redirect('/administration')
     elif bool == 'deny':
-        msg = Message("Key Request", sender=secrets_folder.email, recipients=[email])
+        # craft email and send it then redirect page
+        msg = Message("Key Request", sender=secrets_folder.email,
+                      recipients=[email])
         msg.html = "<div style='text-align:center'><h3 style='color:red'>Your request for unique key has been denied</h3></div>"
         mail.send(msg)
         print('Email sent')
         status_update.confirmation_status = 'Deny'
         return redirect('/administration')
-    
+
     return redirect('/administration')
+
+# function to check if any email waiting to be approve then send email to admin
+
+
+# def admin_task():
+    # get data from admin table from db
+    # au = Authenticate.query
+    # au = Authenticate.query.all()
+    # print(au)
+    # waiting_user = [au[x].uid for x in range(len(au))]
+
+    # if waiting:
+    #     token = jwt.encode({'exp': time() + 600},
+    #                        secrets_folder.secret_key, algorithm='HS256')
+    #     with app.app_context:
+    #         msg = Message("User awaiting approval", sender=secrets_folder.email, recipients=[
+    #                       secrets_folder.adminEmail], text_body=render_template('administration/approval.txt', token=token))
+    #         mail.send(msg)
+    #         print('Email sent')
+    # else:
+    #     pass
+
+
+# apsched = BackgroundScheduler(daemon=True)
+# apsched.add_job(admin_task, 'interval', minutes=1)
+# apsched.start()
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port="8008")
+    # admin_task()
