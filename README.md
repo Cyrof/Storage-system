@@ -25,3 +25,6 @@ After running run.py and installing all requisites, you can now run app.py to st
 ```console
 (venv_name)root@localhost:~$py app.py
 ```
+# IMPORTANT
+### This projects is outdated and not in use anymore.
+### This repository will be archieved. THANK FOR VIEWING.
